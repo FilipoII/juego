@@ -1,0 +1,128 @@
+#region Using Statements
+using System;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.Input;
+
+#endregion
+
+namespace Game_of_Drones
+{/// <summary>
+	/// This is the main type for your game
+	/// </summary>
+	public class Game1 : Microsoft.Xna.Framework.Game
+	{
+		GraphicsDeviceManager graphics;
+		SpriteBatch spriteBatch;
+		Texture2D fijo;
+		Texture2D derecha;
+		Texture2D izquierda;
+		Texture2D fondo;
+
+		Vector2 posicion;
+		Vector2 cordes;
+		Vector2 cordes1;
+		Vector2 cordes2;
+
+
+		public Game1()
+		{
+			graphics = new GraphicsDeviceManager(this);
+			Content.RootDirectory = "../../Content";
+
+		}
+
+		/// <summary>
+		/// Allows the game to perform any initialization it needs to before starting to run.
+		/// This is where it can query for any required services and load any non-graphic
+		/// related content.  Calling base.Initialize will enumerate through any components
+		/// and initialize them as well.
+		/// </summary>
+		protected override void Initialize()
+		{
+			// TODO: Add your initialization logic here
+
+			posicion = Vector2.Zero;
+			cordes = new Vector2 (350,350);
+			base.Initialize();
+		}
+
+		/// <summary>
+		/// LoadContent will be called once per game and is the place to load
+		/// all of your content.
+		/// </summary>
+		protected override void LoadContent()
+		{
+			// Create a new SpriteBatch, which can be used to draw textures.
+			spriteBatch = new SpriteBatch(GraphicsDevice);
+			fondo = Content.Load<Texture2D>("fondos/fondo3");
+			fijo = Content.Load<Texture2D>("Graficos/avion1");
+			derecha = Content.Load<Texture2D> ("Graficos/avion2");
+			izquierda = Content.Load<Texture2D> ("Graficos/avion0");
+			// TODO: use this.Content to load your game content here
+		}
+
+		/// <summary>
+		/// UnloadContent will be called once per game and is the place to unload
+		/// all content.
+		/// </summary>
+		protected override void UnloadContent()
+		{
+			// TODO: Unload any non ContentManager content here
+		
+		}
+
+		/// <summary>
+		/// Allows the game to run logic such as updating the world,
+		/// checking for collisions, gathering input, and playing audio.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		protected override void Update(GameTime gameTime)
+		{
+			// Allows the game to exit
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+				this.Exit();
+			//Movimiento
+			KeyboardState keyboard = Keyboard.GetState();
+
+
+			if (keyboard.IsKeyDown(Keys.Escape)) this.Exit();
+			//Movimiento
+			if (keyboard.IsKeyDown(Keys.Up)) cordes.Y -= 5;
+			if (keyboard.IsKeyDown(Keys.Down)) cordes.Y +=5;
+			if (keyboard.IsKeyDown(Keys.Right)) 
+			{
+				derecha = Content.Load<Texture2D> ("Graficos/avion2");
+				cordes.X += 5;
+			}
+			// si pones esto asi(cordes.X += 5;), al final, el sprite se va hacia la derecha solo. lo podes hacer
+			//para que entren enemigos y salgan disparando
+			if (keyboard.IsKeyDown(Keys.Left)) cordes.X -= 5;
+
+			// TODO: Add your update logic here
+
+			base.Update(gameTime);
+		}
+
+		/// <summary>
+		/// This is called when the game should draw itself.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		protected override void Draw(GameTime gameTime)
+		{
+			GraphicsDevice.Clear(Color.CornflowerBlue);
+
+			// TODO: Add your drawing code here
+			spriteBatch.Begin();
+			spriteBatch.Draw(fondo, posicion, Color.White);
+			spriteBatch.Draw(fijo, cordes, null, Color.White);
+			//spriteBatch.Draw(sprite2, cordes, null, Color.White);
+			spriteBatch.End();
+
+			base.Draw(gameTime);
+		}
+	}
+}
+
